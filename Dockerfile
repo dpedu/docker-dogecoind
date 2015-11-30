@@ -4,7 +4,7 @@ WORKDIR /tmp
 
 RUN apt-get update && \
     apt-get install -y supervisor wget unzip && \
-    wget -O dogecoin.zip https://github.com/dogecoin/dogecoin/releases/download/v1.8.2/dogecoin-1.8.2-linux64.zip && \
+    wget -O dogecoin.zip https://github.com/dogecoin/dogecoin/releases/download/v1.10.0-dogeparty/dogecoin-1.10.0-linux64.tar.gz && \
     unzip dogecoin.zip dogecoind && \
     mv dogecoind /usr/local/bin/dogecoind && \
     chmod +x /usr/local/bin/dogecoind && \
