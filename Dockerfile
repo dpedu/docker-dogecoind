@@ -1,21 +1,20 @@
-FROM ubuntu:trusty
-
-WORKDIR /tmp
+FROM ubuntu:bionic
 
 RUN apt-get update && \
-    apt-get install -y supervisor wget unzip && \
-    wget -O dogecoin.tgz https://github.com/dogecoin/dogecoin/releases/download/v1.10.0-dogeparty/dogecoin-1.10.0-linux64.tar.gz && \
-    tar zxvf dogecoin.tgz dogecoin-1.10.0/bin/dogecoind --strip-components=2 && \
-    mv dogecoind /usr/local/bin/dogecoind && \
-    chmod +x /usr/local/bin/dogecoind && \
+    apt-get install -y wget sudo && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN cd /tmp && \
+    wget -qO dogecoin.tgz https://github.com/dogecoin/dogecoin/releases/download/v1.14-rc-1/dogecoin-1.14.0-x86_64-linux-gnu.tar.gz && \
+    tar zxvf dogecoin.tgz --strip-components=1 -C / && \
     useradd -m crypto && \
     su -c "mkdir /home/crypto/dogecoin/" crypto && \
-    rm -rf /tmp/dogecoin.zip /var/lib/apt/lists/*
+    rm -vf dogecoin.tgz
 
 ADD dogecoin.conf /home/crypto/dogecoin.conf
-ADD supervisor-dogecoin.conf /etc/supervisor/conf.d/dogecoin.conf
+ADD start /start
 
 VOLUME /home/crypto/dogecoin/
 EXPOSE 6969 22556
 
-CMD supervisord
+ENTRYPOINT ["/start"]

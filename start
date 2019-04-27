@@ -1,0 +1,12 @@
+#!/bin/bash
+
+CONFPATH=/home/crypto/dogecoin.conf
+RPCUSER=${RPCUSER:-bobby}
+RPCPASS=${RPCPASS:-propane}
+
+sed -i -E "s/rpcuser=.+$/rpcuser=$RPCUSER/" $CONFPATH
+sed -i -E "s/rpcpassword=.+$/rpcpassword=$RPCPASS/" $CONFPATH
+
+chown -R crypto:crypto /home/crypto/dogecoin/
+
+exec sudo -Hu crypto dogecoind -conf=$CONFPATH
